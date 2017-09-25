@@ -1,0 +1,104 @@
+
+* RECURSIVE ADDITION OF TWO NUMBERS
+** MY FUNCTION
+#+BEGIN_SRC emacs-lisp
+(defun plus (first second)
+  (cond
+   ((= first 0)
+    (cond
+     ((= second 0) 0)
+     (t (1+ (plus first (1- second))))))
+   (t (1+ (plus (1- first) second)))))
+
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp
+(plus 3 4)
+#+END_SRC
+** BOOK FUNCTION
+#+BEGIN_SRC emacs-lisp
+(defun book-plus (first second)
+  (cond
+   ((= second 0) first)
+   (t (1+ (book-plus first (1- second))))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp
+(book_plus 3 4)
+#+END_SRC
+
+* RECURSIVE ADDITION OF NUMBERS IN A LIST
+** FUNCTION
+#+BEGIN_SRC emacs-lips
+(defun addtup (tup)
+  "adds all the integers in the tup"
+  (cond
+   ((null tup) 0)
+   (t (+ (car tup) (addtup (cdr tup))))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp
+(addtup '(5 6 7 8))
+#+END_SRC
+* RECURSIVE SUBTRACTION OF TWO NUMBERS
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+(defun sub (first second)
+  "Subtract the second number from the first number"
+  (cond
+   ((= second 0) first)
+   (t (1- (sub first (1- second))))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp
+(sub 3 1)
+(sub 300 100)
+#+END_SRC
+* RECURSIVE MULTIPLICATION OF TWO NUMBERS
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+(defun mult (first second)
+  "multiple the two numbers"
+  (cond
+   ((= second 0) 0)
+   (t (+ first (mult first (1- second))))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp
+(mult 3 4)
+#+END_SRC
+* RECURSIVE ADDITION OF SAME LENGTH LISTS
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+(defun tup+ (tup1 tup2)
+  "evaluates the numbers in tup1 to tup2"
+  (cond
+   ((and (null tup1) (null tup2))
+    ())
+   (t (cons
+       (+ (car tup1) (car tup2))
+       (tup+ (cdr tup1) (cdr tup2))))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp
+(tup+ '(1 2 3) '(2 3 4))
+#+END_SRC
+* RECURSIVE ADDITION OF DIFFERENT LENGTH LISTS
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+(defun tup+better(tup1 tup2)
+  (cond
+   ((and (null tup1) (null tup2))
+    ())
+   ((null tup1) tup2)
+   ((null tup2) tup1)
+   (t (cons
+       (+ (car tup1) (car tup2))
+       (tup+better (cdr tup1) (cdr tup2)))))) 
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp
+(tup+better '(1) '(2 3 4)) 
+(tup+better '(1 2) '(2)) 
+(tup+better '(2 3 4) '(1)) 
+#+END_SRC
