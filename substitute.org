@@ -28,3 +28,17 @@
   (subst2 'first 'second 'third '(third second first))
   (subst2 'my 'me 'mine '(my me mine))
 #+END_SRC
+* REPLACE ALL INSTANCES OF NEW
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+  (defun multisubst (new old lat)
+    "Replace all instances of old in lat with new"
+    (cond
+     ((null lat) ())
+     ((equal old (car lat)) (cons new (multisubst new old (cdr lat))))
+     (t (cons (car lat) (multisubst new old (cdr lat))))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp
+  (multisubst 'best 'worst '(I am the worst worst worst))
+#+END_SRC
