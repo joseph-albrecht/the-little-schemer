@@ -1,0 +1,24 @@
+* GREATER THAN
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+  (defun gt (num1 num2)
+    "return true if num1 > num2"
+    (cond
+     ((eq num1 0) nil)
+     ((eq num2 0) t)
+     (t (gt (1- num1) (1- num2)))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp :results output
+  (princ
+   (format "5 > 3: %s \n3 > 5: %s \n3 > 3: %s"
+           (gt 5 3)
+           (gt 3 5)
+           (gt 3 3)))
+#+END_SRC
+
+#+RESULTS:
+: 5 > 3: t 
+: 3 > 5: nil 
+: 3 > 3: nil
+
