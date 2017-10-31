@@ -62,22 +62,23 @@
      ((eq num2 0) 0)
      (t (+
          num1
-         (x num1 (1- num2))))))
+         (mult num1 (1- num2))))))
 
 #+END_SRC
 ** TEST CALLS
 #+BEGIN_SRC emacs-lisp :results output
   (princ
-   (format "10 x 10: %d \n 9 x 9: %d \n 5 x 5: %d"
-           (x 10 10)
-           (x 9 9)
-           (x 5 5)))
+   (format "10 x 10: %d \n9 x 9: %d \n5 x 5: %d"
+           (mult 10 10)
+           (mult 9 9)
+           (mult 5 5)))
 #+END_SRC
 
 #+RESULTS:
 : 10 x 10: 100 
-:  9 x 9: 81 
-:  5 x 5: 25
+: 9 x 9: 81 
+: 5 x 5: 25
+
 * RECURSIVE ADDITION OF SAME LENGTH LISTS
 ** FUNCTION
 #+BEGIN_SRC emacs-lisp
