@@ -22,3 +22,28 @@
 : 3 > 5: nil 
 : 3 > 3: nil
 
+* LESS THAN
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+  (defun lt (num1 num2)
+    "returns true if num1 < num2"
+    (cond
+     ((eq num2 0) nil)
+     ((eq num1 0) t)
+     (t (lt (1- num1) (1- num2)))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp :results output
+  (princ
+   (format "5 < 3: %s \n3 < 5: %s \n3 < 3: %s"
+           (lt 5 3)
+           (lt 3 5)
+           (lt 3 3)))
+#+END_SRC
+
+#+RESULTS:
+: 5 < 3: nil 
+: 3 < 5: t 
+: 3 < 3: nil
+
+#+RESULTS
