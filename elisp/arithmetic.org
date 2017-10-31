@@ -114,3 +114,28 @@
 (tup+better '(1 2) '(2)) 
 (tup+better '(2 3 4) '(1)) 
 #+END_SRC
+* RECURSIVE EXPONENTIAL FUNCTION
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+  (defun exp (base exponent)
+    "raise the base to the exponent"
+    (cond
+     ((eq exponent 0) 1)
+     (t (*
+         base
+         (exp base (1- exponent))))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp :results output
+  (princ
+   (format "2^1: %d \n2^2: %d \n2^3: %d"
+           (exp 2 1)
+           (exp 2 2)
+           (exp 2 3)))
+#+END_SRC
+
+#+RESULTS:
+: 2^1: 2 
+: 2^2: 4 
+: 2^3: 8
+
