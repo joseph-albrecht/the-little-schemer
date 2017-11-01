@@ -159,4 +159,24 @@
 #+RESULTS:
 : (a b): 2 
 : (a b c): 3
+* RECURSIVE SELECT ELEMENT
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+  (defun pick (n lat)
+    "pick element n from lat"
+    (cond
+     ((< n 1) nil)
+     ((> n (length lat)) nil)
+     ((eq n 1) (car lat))
+     (t (pick (1- n) (cdr lat)))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp :results output
+  (princ
+   (format "pick 2 from (a b): %s"
+           (pick 2 '(a b))))
+#+END_SRC
+
+#+RESULTS:
+: pick 2 from (a b): b
 
