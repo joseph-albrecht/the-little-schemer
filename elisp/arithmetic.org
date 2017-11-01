@@ -139,3 +139,24 @@
 : 2^2: 4 
 : 2^3: 8
 
+* RECURSIVE LENGTH OF LIST
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+  (defun length (lat)
+    "count the number of atoms in a list"
+    (cond
+     ((null lat) 0)
+     (t (1+ (length (cdr lat))))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp :results output
+  (princ
+   (format "(a b): %d \n(a b c): %d"
+           (length '(a b))
+           (length '(a b c))))
+#+END_SRC
+
+#+RESULTS:
+: (a b): 2 
+: (a b c): 3
+
