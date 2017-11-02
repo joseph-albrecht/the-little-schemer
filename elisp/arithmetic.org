@@ -227,4 +227,27 @@
 #+RESULTS:
 : removing the numbers from (5 pears 6 prunes 9 dates):
 : (pears prunes dates)
+* RECURSIVE REMOVE NON NUMBERS
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+  (defun all-nums (lat)
+    "returns all the numbers in a lat"
+    (cond
+     ((eq (length lat) 0) ())
+     ((numberp (car lat))
+      (cons
+       (car lat)
+       (all-nums (cdr lat))))
+     (t (all-nums (cdr lat)))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp
+  (princ
+   (format "all the numbers in (5 pears 6 prunes 9 dates is:\n%s"
+           (all-nums '(5 pears 6 prunes 9 dates))))
+#+END_SRC
+
+#+RESULTS:
+: all the numbers in (5 pears 6 prunes 9 dates is:
+: (5 6 9)
 
