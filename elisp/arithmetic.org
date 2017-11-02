@@ -180,3 +180,29 @@
 #+RESULTS:
 : pick 2 from (a b): b
 
+* RECURSIVE REMOVE ELEMENT AT INDEX...
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+  (defun rempick (i lat)
+    "remove atom at index i from lat"
+    (cond
+     ((eq i 1) (cdr lat))
+     ((> i (length lat)) (lat))
+     (t (cons
+         (car lat)
+         (rempick (1- i) (cdr lat))))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp :results output
+  (princ
+   (format "removing index 2 from (one two three) produces: %s"
+           (rempick 2 '(one two three))))
+  (princ
+   (format "\nremoving index 3 from (one two three) produces: %s"
+           (rempick 3 '(one two three))))
+#+END_SRC
+
+#+RESULTS:
+: removing index 2 from (one two three) produces: (one three)
+: removing index 3 from (one two three) produces: (one two)
+
