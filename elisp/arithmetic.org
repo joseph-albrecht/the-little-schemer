@@ -205,4 +205,26 @@
 #+RESULTS:
 : removing index 2 from (one two three) produces: (one three)
 : removing index 3 from (one two three) produces: (one two)
+* RECURSIVE REMOVE NUMBERS
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+  (defun no-nums (lat)
+    "remove numbers from lat"
+    (cond
+     ((eq (length lat) 0) ())
+     ((numberp (car lat)) (no-nums (cdr lat)))
+     (t (cons
+         (car lat)
+         (no-nums (cdr lat))))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp
+  (princ
+   (format "removing the numbers from (5 pears 6 prunes 9 dates):\n%s"
+           (no-nums '(5 pears 6 prunes 9 dates))))
+#+END_SRC
+
+#+RESULTS:
+: removing the numbers from (5 pears 6 prunes 9 dates):
+: (pears prunes dates)
 
