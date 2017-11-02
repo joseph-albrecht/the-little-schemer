@@ -250,4 +250,25 @@
 #+RESULTS:
 : all the numbers in (5 pears 6 prunes 9 dates is:
 : (5 6 9)
+* FUNCTION COMPARE ATOMS
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+  (defun occur (a lat)
+    "returns how many times a is in lat"
+    (cond
+     ((null lat) 0)
+     ((equal a (car lat))
+      (1+ (occur a (cdr lat))))
+     (t
+      (occur a (cdr lat)))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp :results output
+  (princ
+   (format "a is in (a a a b c a): %s times"
+           (occur 'a '(a a a b c a))))
+(occur 1 '(1 1 1))
+#+END_SRC
+#+RESULTS:
+: a is in (a a a b c a): 4 times
 
