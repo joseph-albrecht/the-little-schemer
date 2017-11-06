@@ -70,3 +70,35 @@ A recursive function that inserts the new item to the right of every old item in
 
 
 
+* RECURSIVE INSERT RIGHT IN LIST
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+  (defun insertR* (new old l)
+    "Insert new to the right of old in a list l"
+    (cond
+     ((null l) ())
+     ((listp (car l))
+      (cons
+       (insertR* new old (car l))
+       (insertR* new old (cdr l))))
+     (t
+      (cons
+       (car l)
+       (cond
+        ((eq old (car l))
+         (cons
+          new
+          (insertR* new old (cdr l))))
+        (t
+         (insertR* new old (cdr l))))))))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (princ
+   (format "insert a to the right of b in (b (b) b c b): %s"
+           (insertR* 'a 'b '(b (b) b c b))))
+#+END_SRC
+
+#+RESULTS:
+: insert a to the right of b in (b (b) b c b): (b a (b a) b a c b a)
+
