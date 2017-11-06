@@ -335,3 +335,32 @@ A recursive function that inserts the new item to the right of every old item in
 #+RESULTS:
 : removing a from (a (b a) c a) produces: ((b) c)
 
+* COUNT THE NUMBER OF OCCURENCES
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+  (defun occur* (a l)
+    "counts occurences of a in l"
+    (cond
+     ((null l) 0)
+     ((listp (car l))
+      (+
+       (occur* a (car l))
+       (occur* a (cdr l))))
+     (t
+      (cond
+       ((eq (car l) a)
+        (1+ (occur* a (cdr l))))
+       (occur* a (cdr l))))))
+#+END_SRC
+
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp
+  (princ
+   (format "a occurs %s times in (a (a a (a a)) a)"
+           (occur* 'a '(a (a a (a a) a)))))
+#+END_SRC
+
+#+RESULTS:
+: a occurs 6 times in (a (a a (a a)) a)
+
+(eq 'a (car '(a)))
