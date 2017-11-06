@@ -267,8 +267,36 @@
   (princ
    (format "a is in (a a a b c a): %s times"
            (occur 'a '(a a a b c a))))
-(occur 1 '(1 1 1))
 #+END_SRC
 #+RESULTS:
 : a is in (a a a b c a): 4 times
+* FUNCTION REMOVE FROM LIST OF LISTS
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+  (defun rember* (a lat)
+    "Remove a from lat even in sub-lists"
+    (cond
+     ((null (car lat)) ())
+     ((listp (car lat))
+      (cons
+       (rember* a (car lat))
+       (rember* a (cdr lat))))
+     (t
+      (cond
+       ((eq a (car lat))
+        (rember* a (cdr lat)))
+       (t
+        (cons
+         (car lat)
+         (rember* a (cdr lat))))))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp
+  (princ
+   (format "removing a from (a (b a) c a) produces: %s"
+           (rember* 'a '(a (b a) c a))))
+#+END_SRC
+
+#+RESULTS:
+: removing a from (a (b a) c a) produces: ((b) c)
 
