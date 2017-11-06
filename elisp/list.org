@@ -364,3 +364,33 @@ A recursive function that inserts the new item to the right of every old item in
 : a occurs 6 times in (a (a a (a a)) a)
 
 (eq 'a (car '(a)))
+* LEFTMOST
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+  (defun leftmost (l)
+    "get the leftmost atom"
+    (cond
+     ((listp (car l))
+      (cond
+       ((null (car l))
+        (cond
+         ((null (cdr l)) ())
+         (t
+          (leftmost (cdr l)))))
+       ((null (leftmost (car l)))
+        (leftmost (cdr l)))
+       (t (leftmost (car l)))))
+     (t (car l))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp
+  (princ
+   (format "the lefmost atom of (() (a b)) is : %s\nthe lefmost atom of ((()) ((a) b)) is : %s"
+           (leftmost '(() (a b)))
+           (leftmost '((()) ((a) b)))))
+#+END_SRC
+
+#+RESULTS:
+: the lefmost atom of (() (a b)) is : a
+: the lefmost atom of ((()) ((a) b)) is : a
+
