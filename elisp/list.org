@@ -1,0 +1,337 @@
+* RECURSIVE INSERT LEFT ONCE
+A recursive function that inserts the new item to the left of the first old item in lat
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+(defun insertL (new old lat)
+  "Inserts the new atom to the left of the old atom in the lat"
+  (cond
+   ((null lat) ())
+   ((equal old (car lat)) (cons new lat))
+   (t (cons (car lat) (insertL new old (cdr lat))))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp
+(insertL 'forgot 'to '(you to add this word)) 
+
+(insertL 'cool 'program '(this is a program))
+#+END_SRC
+* RECURSIVE INSERT RIGHT ONCE
+A recursive function that inserts the new item to the right of the first old item in lat
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+(defun insertR (new old lat)
+  "Insert new after the first instance of old in the list lat"
+  (cond
+   ((null lat) '())
+   ((equal old (car lat)) (cons old (cons new (cdr lat))))
+   (t (cons (car lat) (insertR new old (cdr lat))))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp
+(insertR 'nice 'its '(its to see you))
+
+(insertR 'am 'I '(I the best))
+#+END_SRC
+
+* RECURSIVE INSERT LEFT ALL
+A recursive function that inserts the new item to the left of every old item in lat
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+(defun multiinsertL (new old lat)
+  "Insert every instance new to the left of old"
+  (cond
+   ((null lat) ())
+   ((equal old (car lat)) (cons new (cons old (multiinsertL new old (cdr lat)))))
+   (t (cons (car lat) (multiinsertL new old (cdr lat))))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp
+(multiinsertL 'e 'm '(r m m b e r))
+#+END_SRC
+
+* RECURSIVE INSERT RIGHT ALL
+A recursive function that inserts the new item to the right of every old item in lat
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+(defun multiinsertR (new old lat)
+  "insert new to the right of every old in lat"
+  (cond
+   ((null lat) ())
+   ((equal old (car lat)) (cons old (cons new (multiinsertR new old (cdr lat)))))
+   (t (cons (car lat) (multiinsertR new old (cdr lat))))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp
+(multiinsertR 'right 'left '(left left left right left))
+#+END_SRC
+
+
+
+* RECURSIVE INSERT RIGHT IN LIST
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+  (defun insertR* (new old l)
+    "Insert new to the right of old in a list l"
+    (cond
+     ((null l) ())
+     ((listp (car l))
+      (cons
+       (insertR* new old (car l))
+       (insertR* new old (cdr l))))
+     (t
+      (cons
+       (car l)
+       (cond
+        ((eq old (car l))
+         (cons
+          new
+          (insertR* new old (cdr l))))
+        (t
+         (insertR* new old (cdr l))))))))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (princ
+   (format "insert a to the right of b in (b (b) b c b): %s"
+           (insertR* 'a 'b '(b (b) b c b))))
+#+END_SRC
+
+#+RESULTS:
+: insert a to the right of b in (b (b) b c b): (b a (b a) b a c b a)
+
+* REPLACE THE FIRST INSTANCE
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+  (defun subst (new old lat)
+    "Replace the first instance of old in lat with new"
+    (cond
+     ((null lat) ())
+     ((equal old (car lat)) (cons new (cdr lat)))
+     (t (cons (car lat) (subst new old (cdr lat))))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp
+  (subst 'joey 'bob '(my name is bob))
+  (subst 'schemer 'memer '(the little memer))
+#+END_SRC
+* REPLACE THE FIRST INSTANCE OF ONE OF TWO OPTIONS
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+  (defun subst2 (new o1 o2 lat)
+    "Replaces the first occurence of o1 or o2 with new"
+    (cond
+     ((null lat) ())
+     ((or (equal o1 (car lat))(equal o2 (car lat))) (cons new (cdr lat)))
+     (t (cons (car lat) (subst2 new o1 o2 (cdr lat))))))
+#+END_SRC 
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp
+  (subst2 'first 'second 'third '(third second first))
+  (subst2 'my 'me 'mine '(my me mine))
+#+END_SRC
+* REPLACE ALL INSTANCES OF NEW
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+  (defun multisubst (new old lat)
+    "Replace all instances of old in lat with new"
+    (cond
+     ((null lat) ())
+     ((equal old (car lat)) (cons new (multisubst new old (cdr lat))))
+     (t (cons (car lat) (multisubst new old (cdr lat))))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp
+  (multisubst 'best 'worst '(I am the worst worst worst))
+#+END_SRC
+
+* GET FIRST ELEMENTS FROM LIST OF LISTS
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+  (defun firsts (list-of-lists)
+    "Get the first element of each list in a list of lists"
+    (cond
+     ((null list-of-lists) ())
+     (t (cons (car (car list-of-lists)) (firsts (cdr list-of-lists))))))
+
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp
+  (firsts '((hello goodbye) (morning night) (one two)))
+  (firsts '((1 2) (3 4) (5 6)))
+#+END_SRC
+* REMOVE ALL OCCURENCES OF TO-REM IN LAT
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+  (defun multirember (to-rem lat)
+    "remove all occurences of to-rem"
+    (cond
+     ((null lat) ())
+     ((equal to-rem (car lat)) (multirember to-rem (cdr lat)))
+     (t (cons (car lat) (multirember to-rem (cdr lat))))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp
+  (multirember 'oops '(oops i did it again oops))
+  (multirember 'one '(one two three one one four one))
+#+END_SRC
+* RECURSIVE LENGTH OF LIST
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+  (defun length (lat)
+    "count the number of atoms in a list"
+    (cond
+     ((null lat) 0)
+     (t (1+ (length (cdr lat))))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp :results output
+  (princ
+   (format "(a b): %d \n(a b c): %d"
+           (length '(a b))
+           (length '(a b c))))
+#+END_SRC
+
+#+RESULTS:
+: (a b): 2 
+: (a b c): 3
+* RECURSIVE SELECT ELEMENT
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+  (defun pick (n lat)
+    "pick element n from lat"
+    (cond
+     ((< n 1) nil)
+     ((> n (length lat)) nil)
+     ((eq n 1) (car lat))
+     (t (pick (1- n) (cdr lat)))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp :results output
+  (princ
+   (format "pick 2 from (a b): %s"
+           (pick 2 '(a b))))
+#+END_SRC
+
+#+RESULTS:
+: pick 2 from (a b): b
+
+* RECURSIVE REMOVE ELEMENT AT INDEX...
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+  (defun rempick (i lat)
+    "remove atom at index i from lat"
+    (cond
+     ((eq i 1) (cdr lat))
+     ((> i (length lat)) (lat))
+     (t (cons
+         (car lat)
+         (rempick (1- i) (cdr lat))))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp :results output
+  (princ
+   (format "removing index 2 from (one two three) produces: %s"
+           (rempick 2 '(one two three))))
+  (princ
+   (format "\nremoving index 3 from (one two three) produces: %s"
+           (rempick 3 '(one two three))))
+#+END_SRC
+
+#+RESULTS:
+: removing index 2 from (one two three) produces: (one three)
+: removing index 3 from (one two three) produces: (one two)
+* RECURSIVE REMOVE NUMBERS
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+  (defun no-nums (lat)
+    "remove numbers from lat"
+    (cond
+     ((eq (length lat) 0) ())
+     ((numberp (car lat)) (no-nums (cdr lat)))
+     (t (cons
+         (car lat)
+         (no-nums (cdr lat))))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp
+  (princ
+   (format "removing the numbers from (5 pears 6 prunes 9 dates):\n%s"
+           (no-nums '(5 pears 6 prunes 9 dates))))
+#+END_SRC
+
+#+RESULTS:
+: removing the numbers from (5 pears 6 prunes 9 dates):
+: (pears prunes dates)
+* RECURSIVE REMOVE NON NUMBERS
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+  (defun all-nums (lat)
+    "returns all the numbers in a lat"
+    (cond
+     ((eq (length lat) 0) ())
+     ((numberp (car lat))
+      (cons
+       (car lat)
+       (all-nums (cdr lat))))
+     (t (all-nums (cdr lat)))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp
+  (princ
+   (format "all the numbers in (5 pears 6 prunes 9 dates is:\n%s"
+           (all-nums '(5 pears 6 prunes 9 dates))))
+#+END_SRC
+
+#+RESULTS:
+: all the numbers in (5 pears 6 prunes 9 dates is:
+: (5 6 9)
+* FUNCTION COMPARE ATOMS
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+  (defun occur (a lat)
+    "returns how many times a is in lat"
+    (cond
+     ((null lat) 0)
+     ((equal a (car lat))
+      (1+ (occur a (cdr lat))))
+     (t
+      (occur a (cdr lat)))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp :results output
+  (princ
+   (format "a is in (a a a b c a): %s times"
+           (occur 'a '(a a a b c a))))
+#+END_SRC
+#+RESULTS:
+: a is in (a a a b c a): 4 times
+* FUNCTION REMOVE FROM LIST OF LISTS
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+  (defun rember* (a lat)
+    "Remove a from lat even in sub-lists"
+    (cond
+     ((null (car lat)) ())
+     ((listp (car lat))
+      (cons
+       (rember* a (car lat))
+       (rember* a (cdr lat))))
+     (t
+      (cond
+       ((eq a (car lat))
+        (rember* a (cdr lat)))
+       (t
+        (cons
+         (car lat)
+         (rember* a (cdr lat))))))))
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp
+  (princ
+   (format "removing a from (a (b a) c a) produces: %s"
+           (rember* 'a '(a (b a) c a))))
+#+END_SRC
+
+#+RESULTS:
+: removing a from (a (b a) c a) produces: ((b) c)
+
