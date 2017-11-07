@@ -66,7 +66,6 @@ A recursive function that inserts the new item to the right of every old item in
 #+END_SRC
 
 
-
 * RECURSIVE INSERT RIGHT IN LIST
 ** FUNCTION
 #+BEGIN_SRC emacs-lisp
@@ -385,12 +384,52 @@ A recursive function that inserts the new item to the right of every old item in
 ** TEST CALLS
 #+BEGIN_SRC emacs-lisp
   (princ
-   (format "the lefmost atom of (() (a b)) is : %s\nthe lefmost atom of ((()) ((a) b)) is : %s"
+   (format "the lefmost atom of (() (a b)) is : %s\nthe lefmost atom of '(((())b) ((a) b)))) is : %s"
            (leftmost '(() (a b)))
-           (leftmost '((()) ((a) b)))))
+           (leftmost '(((()())b) ((a) b)))))
 #+END_SRC
 
 #+RESULTS:
 : the lefmost atom of (() (a b)) is : a
-: the lefmost atom of ((()) ((a) b)) is : a
+: the lefmost atom of '(((())b) ((a) b)))) is : b
 
+* CHECK IF TWO LISTS ARE EQUAL
+** FUNCTION
+#+BEGIN_SRC emacs-lisp
+  (defun eqlist (a b)
+    "test if list a is equal to list b"
+    (cond
+     ((and (null a) (null b))
+      t)
+     ((and (null (car a)) (null (car b)))
+      (cond
+       ((or (null (cdr a)) (null (cdr b)))
+        () )
+       (t
+        (and (eqlist (car a) (car b))
+             (eqlist (cdr a) (cdr b))))))
+     ((and (null (car a)) (not (null (car b))))
+      () )
+     ((and (not (null (car a))) (null (car b)))
+      () )
+     ((and (listp (car a)) (listp (car b)))
+      (eqlist (cdr a) (cdr b)))
+     ((and (listp (car a)) (not (listp (car b))))
+      () )
+     ((and (not (listp (car a))) (listp (car b)))
+      () )
+     ((eq (car a) (car b))
+      (cond
+       ((and (null (cdr a)) (null (cdr b)))
+        t)
+       ((or (null (cdr a)) (null (cdr b)))
+        () )
+       (t
+        (eqlist (cdr a) (cdr b)))))))
+
+#+END_SRC
+** TEST CALLS
+#+BEGIN_SRC emacs-lisp
+  (eqlist '(c (() (a)) b) '(c (() (a)) b))
+  (eqlist '(c (() (a)) () b) '(c (() (a)) b))
+#+END_SRC
